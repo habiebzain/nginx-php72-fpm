@@ -1,0 +1,6 @@
+---
+- name: bootstrap ap server
+  hosts: proxmox_lab
+  become: yes
+  roles: 
+    - node-exporter
