@@ -1,6 +1,6 @@
 ---
 - name: bootstrap ap server
-  hosts: proxmox_lab
+  hosts: web_server
   become: yes
   roles: 
-    - node-exporter
+    - nginx
