@@ -4,3 +4,16 @@
   become: yes
   roles: 
     - nginx
+    - basic_package
+    - php72-fpm
+  vars:
+    php_version: 7.2
+  handlers:
+    - name: Restart Nginx
+      service:
+        name: nginx
+        state: restarted
+    - name: Restart PHP-FPM
+      ansible.builtin.service:
+        name: php{{ php_vers }}-fpm
+        state: restarted

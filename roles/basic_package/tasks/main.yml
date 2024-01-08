@@ -1,0 +1,45 @@
+---
+# tasks file for node-exporter
+- name: Run the equivalent of "apt-get update" as a separate step
+  ansible.builtin.apt:
+    update_cache: yes
+
+- name: Update all packages to their latest version
+  ansible.builtin.apt:
+    name: "*"
+    state: latest
+
+- name: Install paket dasar
+  ansible.builtin.apt:
+    pkg: 
+      - htop
+      - iotop
+      - iftop
+      - net-tools
+      - vim
+      - zip
+      - unzip
+      - software-properties-common 
+      - ca-certificates 
+      - python3-mysqldb
+      - lsb-release 
+      - apt-transport-https
+- name: Set timezone to Asia/Jakarta
+  community.general.timezone:
+    name: Asia/Jakarta
+
+# - name: Disable UFW on hosts
+#   ufw:
+#     state: disabled # unloads firewall and disables firewall on boot.
+
+- name: Stop service ufw, if started
+  ansible.builtin.service:
+    name: ufw
+    state: stopped
+    enabled: no
+
+- name: Stop service apparmor.service, if started
+  ansible.builtin.service:
+    name: apparmor.service
+    state: stopped
+    enabled: no
