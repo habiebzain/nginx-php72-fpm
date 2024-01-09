@@ -5,14 +5,28 @@
     state: latest
     update_cache: yes
 
+- name: Create a directory {{ domain }} if it does not exist
+  ansible.builtin.file:
+    path: "/var/www/html/{{ domain }}/public"
+    state: directory
+    mode: '0755'
+
+- name: Copy Nginx default site configuration with owner and permissions
+  ansible.builtin.template:
+    src: roles/nginx/files/nginx-laravel-vhost.conf.j2
+    dest: /etc/nginx/sites-available/vhost-{{domain}}
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Enable Nginx site # untuk menghubungkan (link) file dari direktori "sites-available" ke "sites-enabled" di host target
+  file:
+    src: /etc/nginx/sites-available/vhost-{{domain}} 
+    dest: /etc/nginx/sites-enabled/vhost-{{domain}}.conf 
+    state: link
+
 - name: Restart service nginx, in all cases
   ansible.builtin.service:
     name: nginx
     state: restarted
-    enabled: yes    
-
-- name: check nginx port
-  uri:
-    url: http://localhost:80
-    method: GET
-    status_code: 200
+    enabled: yes

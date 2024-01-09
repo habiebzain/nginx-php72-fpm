@@ -1,0 +1,15 @@
+[pool-{{domain}}]
+
+user = www-data                         ; User yang akan digunakan sebagai owner pool PHP
+group = www-data                        ; Grup yang akan digunakan sebagai owner pool PHP
+listen = 127.0.0.1:{{ php_fpm_port }}   ; Lokasi socket untuk komunikasi dengan Nginx
+listen.allowed_clients = 127.0.0.1
+listen.owner = www-data        ; Owner socket
+listen.group = www-data        ; Grpup socket
+listen.mode = 0660             ; Privilege untuk socket
+
+pm = dynamic                   ; Menggunakan process manager mode dynamic untuk PHP-FPM
+pm.max_children = 5            ; Jumlah maksimal child processes yang diizinkan
+pm.start_servers = 2           ; Jumlah child processes yang akan dibuat saat PHP-FPM pertama kali startup
+pm.min_spare_servers = 1       ; Jumlah minimal spare child processes
+pm.max_spare_servers = 3       ; Jumlah maksimal spare child processes

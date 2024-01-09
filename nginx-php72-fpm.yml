@@ -3,17 +3,12 @@
   hosts: web_server
   become: yes
   roles: 
+    # - basic_package
     - nginx
-    - basic_package
     - php72-fpm
   vars:
+    Fresh_install: true
+    new_user: habibza
     php_version: 7.2
-  handlers:
-    - name: Restart Nginx
-      service:
-        name: nginx
-        state: restarted
-    - name: Restart PHP-FPM
-      ansible.builtin.service:
-        name: php{{ php_vers }}-fpm
-        state: restarted
+    domain: laravel.habibza.in
+    php_fpm_port: 9000

@@ -17,6 +17,7 @@
       apt:
         name:
           - php{{ php_version }}-common
+          - php{{ php_version }}-bcmath
           - php{{ php_version }}-curl
           - php{{ php_version }}-intl
           - php{{ php_version }}-zip
@@ -24,7 +25,6 @@
           - php{{ php_version }}-gd
           - php{{ php_version }}-mbstring
           - php{{ php_version }}-mcrypt
-          - php{{ php_version }}-mysqlnd
           - php{{ php_version }}-odbc
           - php{{ php_version }}-mysql
           - php{{ php_version }}-soap
@@ -32,11 +32,21 @@
           - php{{ php_version }}-xmlrpc
           - php{{ php_version }}-soap
           - php{{ php_version }}-redis
-          - php{{ php_version }}-dev
-          - php{{ php_version }}-imap
-          - php{{ php_version }}-imagick
-          - php{{ php_version }}-bcmath
           - php{{ php_version }}-json
           - php{{ php_version }}-exif
         update_cache: yes
         state: present
+    - name: Remove file (delete file)
+      ansible.builtin.file:
+        path: "/etc/php/{{php_version}}/fpm/pool.d/www.conf"
+        state: absent
+  
+    - name: Configure PHP-FPM pool
+      ansible.builtin.template:
+        src: roles/php72-fpm/files/laravel-pool.conf.j2
+        dest: "/etc/php/{{php_version}}/fpm/pool.d/pool-{{domain}}.conf"
+    
+    - name: Restart service php7.2-fpm, in all cases
+      ansible.builtin.service:
+        name: php{{ php_version }}-fpm
+        state: restarted
