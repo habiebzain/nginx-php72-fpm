@@ -3,7 +3,7 @@
   hosts: web_server
   become: yes
   roles: 
-    # - basic_package
+    - basic_package
     - nginx
     - php72-fpm
   vars:
