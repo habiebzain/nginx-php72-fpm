@@ -19,6 +19,7 @@
       - vim
       - zip
       - unzip
+      - curl
       - software-properties-common 
       - ca-certificates 
       - python3-mysqldb
